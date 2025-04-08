@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X, Phone, ChevronDown, Search, ArrowUp } from 'lucide-react';
+import { Menu, X, Phone, ChevronDown, ArrowUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const Navbar = () => {
@@ -40,7 +40,6 @@ const Navbar = () => {
     { name: 'Home', path: '/' },
     { name: 'Destinations', path: '/destinations', hasDropdown: true },
     { name: 'Holiday Packages', path: '/packages', hasDropdown: true },
-    { name: 'About Us', path: '/about' },
     { name: 'Contact', path: '/contact' },
   ];
 
@@ -99,16 +98,8 @@ const Navbar = () => {
               ))}
             </nav>
 
-            {/* Call and Search Action Buttons */}
+            {/* Call Action Button */}
             <div className="hidden lg:flex items-center space-x-4">
-              <Button 
-                size="sm"
-                variant="ghost"
-                className="text-black hover:text-vrred-500 hover:bg-transparent"
-              >
-                <Search className="h-5 w-5 mr-1" />
-                Search
-              </Button>
               <Button 
                 size="sm" 
                 variant="outline"
