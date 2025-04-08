@@ -1,14 +1,14 @@
 
 import React, { useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Checkbox } from '@/components/ui/checkbox';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { PackageCard, PackageProps } from '@/components/packages/PackageCard';
-import { MapPin, Calendar, Filter } from 'lucide-react';
+import { MapPin, Calendar, Filter, Star, Clock, Users, DollarSign } from 'lucide-react';
 import allPackages from '@/data/packages';
 
 const Packages = () => {
@@ -32,6 +32,9 @@ const Packages = () => {
     maxPrice: '',
     duration: ''
   });
+  
+  const [selectedPackage, setSelectedPackage] = useState<PackageProps | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleFilterChange = (key: string, value: string) => {
     setFilters(prev => ({ ...prev, [key]: value }));
@@ -58,11 +61,16 @@ const Packages = () => {
     
     setPackages(filtered);
   };
+  
+  const openPackageDetails = (pkg: PackageProps) => {
+    setSelectedPackage(pkg);
+    setIsDialogOpen(true);
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-grow">
+      <main className="flex-grow pt-24">
         <div className="bg-gray-100 py-10">
           <div className="container mx-auto">
             <h1 className="text-3xl md:text-4xl font-bold mb-2">Holiday Packages</h1>
@@ -155,7 +163,9 @@ const Packages = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {packages.map((pkg) => (
-                <PackageCard key={pkg.id} {...pkg} />
+                <div key={pkg.id} className="cursor-pointer" onClick={() => openPackageDetails(pkg)}>
+                  <PackageCard {...pkg} />
+                </div>
               ))}
             </div>
             
@@ -174,6 +184,116 @@ const Packages = () => {
         </div>
       </main>
       <Footer />
+      
+      {/* Package Details Dialog */}
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto">
+          {selectedPackage && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="text-2xl">{selectedPackage.title}</DialogTitle>
+                <DialogDescription className="flex items-center text-base text-vrred-500">
+                  <MapPin className="h-4 w-4 mr-1" /> {selectedPackage.destination}
+                </DialogDescription>
+              </DialogHeader>
+              
+              <div className="mt-4">
+                <img 
+                  src={selectedPackage.image} 
+                  alt={selectedPackage.title} 
+                  className="w-full h-[300px] object-cover rounded-lg"
+                />
+                
+                <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <h3 className="font-semibold text-lg mb-3">Package Highlights</h3>
+                    <ul className="space-y-2">
+                      <li className="flex items-center">
+                        <Clock className="h-4 w-4 text-vrred-500 mr-2" />
+                        <span>{selectedPackage.duration}</span>
+                      </li>
+                      <li className="flex items-center">
+                        <Users className="h-4 w-4 text-vrred-500 mr-2" />
+                        <span>Group Size: 10-15 people</span>
+                      </li>
+                      <li className="flex items-center">
+                        <Star className="h-4 w-4 text-vrred-500 mr-2" />
+                        <span>4.8/5 Rating</span>
+                      </li>
+                      <li className="flex items-center">
+                        <Calendar className="h-4 w-4 text-vrred-500 mr-2" />
+                        <span>Available year-round</span>
+                      </li>
+                    </ul>
+                    
+                    <div className="mt-6">
+                      <h3 className="font-semibold text-lg mb-3">Included</h3>
+                      <ul className="list-disc list-inside space-y-1 text-sm">
+                        <li>Return flights from Delhi</li>
+                        <li>Accommodation in 4-star hotels</li>
+                        <li>Daily breakfast and dinner</li>
+                        <li>All sightseeing and transfers</li>
+                        <li>English speaking tour guide</li>
+                      </ul>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <div className="flex justify-between items-center mb-4">
+                        <div>
+                          <p className="text-sm text-gray-600">Price starts from</p>
+                          <p className="text-2xl font-bold text-vrred-500">₹{selectedPackage.price.toLocaleString()}</p>
+                          <p className="text-xs text-gray-500">per person on twin sharing</p>
+                        </div>
+                        <div className="flex flex-col space-y-2">
+                          <Button className="bg-vrred-500 hover:bg-vrred-600" asChild>
+                            <Link to={`/contact?package=${selectedPackage.title}`}>Book Now</Link>
+                          </Button>
+                        </div>
+                      </div>
+                      
+                      <p className="text-sm mb-4">{selectedPackage.description}</p>
+                      
+                      <Button variant="outline" className="w-full border-vrred-500 text-vrred-500 hover:bg-vrred-50" asChild>
+                        <Link to={`/contact?package=${selectedPackage.title}`}>Enquire Now</Link>
+                      </Button>
+                    </div>
+                    
+                    <div className="mt-6">
+                      <h3 className="font-semibold text-lg mb-3">Not Included</h3>
+                      <ul className="list-disc list-inside space-y-1 text-sm">
+                        <li>Visa fees and travel insurance</li>
+                        <li>Personal expenses</li>
+                        <li>Optional tours and activities</li>
+                        <li>Tips and gratuities</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="mt-6">
+                  <h3 className="font-semibold text-lg mb-3">Itinerary Overview</h3>
+                  <div className="space-y-4">
+                    <div className="border-l-2 border-vrred-500 pl-4">
+                      <p className="font-medium">Day 1: Arrival</p>
+                      <p className="text-sm text-gray-600">Arrival at destination, transfer to hotel, welcome dinner.</p>
+                    </div>
+                    <div className="border-l-2 border-vrred-500 pl-4">
+                      <p className="font-medium">Day 2-5: Exploration</p>
+                      <p className="text-sm text-gray-600">Visit major attractions, cultural experiences, and local cuisine.</p>
+                    </div>
+                    <div className="border-l-2 border-vrred-500 pl-4">
+                      <p className="font-medium">Day 6-7: Leisure</p>
+                      <p className="text-sm text-gray-600">Free time for shopping or optional activities, farewell dinner.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

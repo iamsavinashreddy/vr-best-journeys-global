@@ -16,7 +16,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 10%;
 
-    --primary: 352 82% 57%; /* VR Best Travels Red */
+    --primary: 351 96% 42%; /* Cherry red */
     --primary-foreground: 0 0% 100%;
 
     --secondary: 0 0% 96%;
@@ -33,7 +33,7 @@
 
     --border: 0 0% 90%;
     --input: 0 0% 90%;
-    --ring: 352 82% 57%;
+    --ring: 351 96% 42%; /* Cherry red */
 
     --radius: 0.5rem;
 
