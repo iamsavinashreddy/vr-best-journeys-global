@@ -1,11 +1,36 @@
 
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Search, MapPin, Calendar, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
+import { 
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import { Calendar as CalendarComponent } from '@/components/ui/calendar';
+import { format } from 'date-fns';
+import { cn } from '@/lib/utils';
 
 const Hero = () => {
-  const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
   const [destination, setDestination] = useState('');
+  const [travelers, setTravelers] = useState('');
+  const [date, setDate] = useState<Date>();
+  
+  const handleSearch = () => {
+    if (!destination) {
+      toast.error("Please select a destination");
+      return;
+    }
+    
+    const searchParams = new URLSearchParams();
+    if (destination) searchParams.set('destination', destination);
+    if (date) searchParams.set('month', format(date, 'MMMM'));
+    
+    navigate(`/packages?${searchParams.toString()}`);
+  };
 
   return (
     <div className="relative h-screen min-h-[600px] max-h-[800px]">
@@ -42,23 +67,36 @@ const Hero = () => {
                     onChange={(e) => setDestination(e.target.value)}
                   >
                     <option value="">Select Destination</option>
-                    <option value="usa">USA</option>
-                    <option value="japan">Japan</option>
-                    <option value="china">China</option>
-                    <option value="sri-lanka">Sri Lanka</option>
+                    <option value="USA">USA</option>
+                    <option value="Japan">Japan</option>
+                    <option value="China">China</option>
+                    <option value="Sri Lanka">Sri Lanka</option>
                   </select>
                 </div>
               </div>
               
               <div className="flex-1">
-                <div className="relative">
-                  <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 h-5 w-5" />
-                  <input 
-                    type="text" 
-                    placeholder="When (Month)"
-                    className="w-full pl-10 pr-3 py-3 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-vrred-500 text-gray-800"
-                  />
-                </div>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <div className="relative cursor-pointer">
+                      <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 h-5 w-5" />
+                      <div 
+                        className="w-full pl-10 pr-3 py-3 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-vrred-500 text-gray-800 flex items-center"
+                      >
+                        {date ? format(date, 'MMMM yyyy') : <span className="text-gray-500">When (Month)</span>}
+                      </div>
+                    </div>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <CalendarComponent
+                      mode="single"
+                      selected={date}
+                      onSelect={setDate}
+                      initialFocus
+                      className={cn("p-3 pointer-events-auto")}
+                    />
+                  </PopoverContent>
+                </Popover>
               </div>
               
               <div className="flex-1">
@@ -66,6 +104,8 @@ const Hero = () => {
                   <Users className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 h-5 w-5" />
                   <select 
                     className="w-full pl-10 pr-3 py-3 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-vrred-500 text-gray-800"
+                    value={travelers}
+                    onChange={(e) => setTravelers(e.target.value)}
                   >
                     <option value="">Travelers</option>
                     <option value="1">1 Person</option>
@@ -77,7 +117,10 @@ const Hero = () => {
                 </div>
               </div>
               
-              <Button className="bg-vrred-500 hover:bg-vrred-600 text-white px-6 py-3 rounded-md">
+              <Button 
+                className="bg-vrred-500 hover:bg-vrred-600 text-white px-6 py-3 rounded-md"
+                onClick={handleSearch}
+              >
                 <Search className="h-5 w-5 mr-2" />
                 Search
               </Button>
