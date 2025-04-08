@@ -90,7 +90,7 @@ const Packages = () => {
                       <SelectValue placeholder="Select destination" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Destinations</SelectItem>
+                      <SelectItem value="all">All Destinations</SelectItem>
                       <SelectItem value="USA">USA</SelectItem>
                       <SelectItem value="Japan">Japan</SelectItem>
                       <SelectItem value="China">China</SelectItem>
@@ -129,7 +129,7 @@ const Packages = () => {
                       <SelectValue placeholder="Select duration" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Any Duration</SelectItem>
+                      <SelectItem value="any">Any Duration</SelectItem>
                       <SelectItem value="7 Days">7 Days</SelectItem>
                       <SelectItem value="8 Days">8 Days</SelectItem>
                       <SelectItem value="9 Days">9 Days</SelectItem>
