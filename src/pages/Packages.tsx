@@ -40,7 +40,7 @@ const Packages = () => {
   const applyFilters = () => {
     let filtered = [...allPackages];
     
-    if (filters.destination) {
+    if (filters.destination && filters.destination !== 'all') {
       filtered = filtered.filter(pkg => pkg.destination.toLowerCase() === filters.destination.toLowerCase());
     }
     
@@ -52,7 +52,7 @@ const Packages = () => {
       filtered = filtered.filter(pkg => pkg.price <= parseInt(filters.maxPrice));
     }
     
-    if (filters.duration) {
+    if (filters.duration && filters.duration !== 'any') {
       filtered = filtered.filter(pkg => pkg.duration.includes(filters.duration));
     }
     
