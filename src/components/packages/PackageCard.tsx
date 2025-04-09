@@ -17,7 +17,11 @@ export interface PackageProps {
   description?: string;
 }
 
-export const PackageCard: React.FC<PackageProps> = ({ 
+interface PackageCardProps extends PackageProps {
+  onSelect?: () => void;
+}
+
+export const PackageCard: React.FC<PackageCardProps> = ({ 
   id, 
   title, 
   image, 
@@ -25,12 +29,20 @@ export const PackageCard: React.FC<PackageProps> = ({
   duration, 
   rating, 
   destination,
-  featured 
+  featured,
+  onSelect
 }) => {
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     toast.success('Added to favorites');
+  };
+
+  const handleViewDetails = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (onSelect) {
+      onSelect();
+    }
   };
 
   return (
@@ -85,7 +97,7 @@ export const PackageCard: React.FC<PackageProps> = ({
           <Button
             size="sm"
             className="bg-[#D2042D] hover:bg-[#AA0024] text-white"
-            data-package-id={id}
+            onClick={handleViewDetails}
           >
             View Details
           </Button>

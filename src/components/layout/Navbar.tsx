@@ -54,7 +54,9 @@ const Navbar = () => {
     <>
       <header 
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled ? 'bg-white shadow-md py-2' : 'bg-transparent py-4'
+          isScrolled 
+            ? 'bg-white shadow-md py-2' 
+            : 'bg-black/40 backdrop-blur-sm py-4'
         }`}
       >
         <div className="container mx-auto px-4">
@@ -74,7 +76,7 @@ const Navbar = () => {
                 <div key={link.name} className="relative group">
                   <Link
                     to={link.path}
-                    className="flex items-center text-black hover:text-[#D2042D] font-bold"
+                    className="flex items-center text-white font-bold hover:text-[#D2042D]"
                     onClick={(e) => {
                       if (link.hasDropdown) {
                         e.preventDefault();
@@ -115,7 +117,7 @@ const Navbar = () => {
               <Button 
                 size="sm" 
                 variant="outline"
-                className="border-[#D2042D] text-[#D2042D] hover:bg-[#D2042D]/10"
+                className="border-[#D2042D] text-white hover:bg-[#D2042D]/10"
               >
                 <Phone className="h-4 w-4 mr-1" />
                 +91 1234567890
@@ -135,11 +137,12 @@ const Navbar = () => {
                 variant="ghost" 
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 aria-label="Toggle Menu"
+                className="text-white"
               >
                 {isMobileMenuOpen ? (
                   <X className="h-6 w-6 text-[#D2042D]" />
                 ) : (
-                  <Menu className="h-6 w-6 text-[#D2042D]" />
+                  <Menu className="h-6 w-6" />
                 )}
               </Button>
             </div>
@@ -153,7 +156,7 @@ const Navbar = () => {
                   <React.Fragment key={link.name}>
                     <Link
                       to={link.path}
-                      className="px-4 py-2 text-black hover:bg-gray-50 hover:text-[#D2042D] rounded-md font-bold"
+                      className="px-4 py-2 text-white hover:bg-white/10 hover:text-[#D2042D] rounded-md font-bold"
                       onClick={() => {
                         if (!link.hasDropdown) {
                           setIsMobileMenuOpen(false);
@@ -164,17 +167,17 @@ const Navbar = () => {
                     </Link>
                     {link.hasDropdown && link.name === 'Destinations' && (
                       <div className="pl-6 flex flex-col space-y-1">
-                        <Link to="/packages?destination=usa" className="px-4 py-1.5 text-sm text-gray-600 hover:text-[#D2042D]" onClick={() => setIsMobileMenuOpen(false)}>USA</Link>
-                        <Link to="/packages?destination=japan" className="px-4 py-1.5 text-sm text-gray-600 hover:text-[#D2042D]" onClick={() => setIsMobileMenuOpen(false)}>Japan</Link>
-                        <Link to="/packages?destination=china" className="px-4 py-1.5 text-sm text-gray-600 hover:text-[#D2042D]" onClick={() => setIsMobileMenuOpen(false)}>China</Link>
-                        <Link to="/packages?destination=sri-lanka" className="px-4 py-1.5 text-sm text-gray-600 hover:text-[#D2042D]" onClick={() => setIsMobileMenuOpen(false)}>Sri Lanka</Link>
+                        <Link to="/packages?destination=usa" className="px-4 py-1.5 text-sm text-gray-300 hover:text-[#D2042D]" onClick={() => setIsMobileMenuOpen(false)}>USA</Link>
+                        <Link to="/packages?destination=japan" className="px-4 py-1.5 text-sm text-gray-300 hover:text-[#D2042D]" onClick={() => setIsMobileMenuOpen(false)}>Japan</Link>
+                        <Link to="/packages?destination=china" className="px-4 py-1.5 text-sm text-gray-300 hover:text-[#D2042D]" onClick={() => setIsMobileMenuOpen(false)}>China</Link>
+                        <Link to="/packages?destination=sri-lanka" className="px-4 py-1.5 text-sm text-gray-300 hover:text-[#D2042D]" onClick={() => setIsMobileMenuOpen(false)}>Sri Lanka</Link>
                       </div>
                     )}
                     {link.hasDropdown && link.name === 'Holiday Packages' && (
                       <div className="pl-6 flex flex-col space-y-1">
-                        <Link to="/packages?type=group" className="px-4 py-1.5 text-sm text-gray-600 hover:text-[#D2042D]" onClick={() => setIsMobileMenuOpen(false)}>Group Tours</Link>
-                        <Link to="/packages?type=customized" className="px-4 py-1.5 text-sm text-gray-600 hover:text-[#D2042D]" onClick={() => setIsMobileMenuOpen(false)}>Customized Tours</Link>
-                        <Link to="/packages?type=luxury" className="px-4 py-1.5 text-sm text-gray-600 hover:text-[#D2042D]" onClick={() => setIsMobileMenuOpen(false)}>Luxury Tours</Link>
+                        <Link to="/packages?type=group" className="px-4 py-1.5 text-sm text-gray-300 hover:text-[#D2042D]" onClick={() => setIsMobileMenuOpen(false)}>Group Tours</Link>
+                        <Link to="/packages?type=customized" className="px-4 py-1.5 text-sm text-gray-300 hover:text-[#D2042D]" onClick={() => setIsMobileMenuOpen(false)}>Customized Tours</Link>
+                        <Link to="/packages?type=luxury" className="px-4 py-1.5 text-sm text-gray-300 hover:text-[#D2042D]" onClick={() => setIsMobileMenuOpen(false)}>Luxury Tours</Link>
                       </div>
                     )}
                   </React.Fragment>
