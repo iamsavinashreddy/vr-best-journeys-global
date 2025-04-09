@@ -55,7 +55,7 @@ const Navbar = () => {
             {/* Logo */}
             <Link to="/" className="flex items-center">
               <img 
-                src="https://raw.githubusercontent.com/iamsavinashreddy/vrbest-group/main/Img/vr-best-group-logo1.png" 
+                src="https://raw.githubusercontent.com/iamsavinashreddy/vrbest-group/main/Img/vr-best-travel-logo-1.png" 
                 alt="VR Best Travels" 
                 className="h-12 w-auto"
               />
