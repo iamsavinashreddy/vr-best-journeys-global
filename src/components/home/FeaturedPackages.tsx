@@ -13,7 +13,7 @@ const FeaturedPackages = () => {
   const [selectedPackage, setSelectedPackage] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  // Function to handle package selection
+  // Function to handle package selection by ID
   const handlePackageSelect = (packageId) => {
     const pkg = allPackages.find(p => p.id === packageId);
     if (pkg) {
@@ -38,7 +38,7 @@ const FeaturedPackages = () => {
               <PackageCard 
                 {...pkg} 
                 featured={true} 
-                onSelect={() => handlePackageSelect(pkg.id)}
+                onSelect={(id) => handlePackageSelect(id)}
               />
             </div>
           ))}

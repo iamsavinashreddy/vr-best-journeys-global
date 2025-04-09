@@ -18,7 +18,7 @@ export interface PackageProps {
 }
 
 interface PackageCardProps extends PackageProps {
-  onSelect?: () => void;
+  onSelect?: (id: number) => void;  // Updated to pass ID when selected
 }
 
 export const PackageCard: React.FC<PackageCardProps> = ({ 
@@ -38,10 +38,12 @@ export const PackageCard: React.FC<PackageCardProps> = ({
     toast.success('Added to favorites');
   };
 
+  // Handle the details view, passing the ID to parent component
   const handleViewDetails = (e: React.MouseEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     if (onSelect) {
-      onSelect();
+      onSelect(id);
     }
   };
 
