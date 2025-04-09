@@ -42,6 +42,7 @@ export const PackageCard: React.FC<PackageCardProps> = ({
   const handleViewDetails = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    console.log("View Details clicked, id:", id);
     if (onSelect) {
       onSelect(id);
     }
@@ -100,6 +101,7 @@ export const PackageCard: React.FC<PackageCardProps> = ({
             size="sm"
             className="bg-[#D2042D] hover:bg-[#AA0024] text-white"
             onClick={handleViewDetails}
+            data-package-id={id} // Adding data attribute to help with detection
           >
             View Details
           </Button>

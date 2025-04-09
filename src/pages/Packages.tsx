@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, Link, useLocation } from 'react-router-dom';
 import Navbar from '@/components/layout/Navbar';
@@ -79,29 +78,15 @@ const Packages = () => {
     setPackages(filtered);
   };
 
-  // Global click handler to capture package card clicks
-  useEffect(() => {
-    const handlePackageClick = (e: MouseEvent) => {
-      // Find closest button with data-package-id
-      const target = e.target as Element;
-      const packageButton = target.closest('button[data-package-id]');
-      
-      if (packageButton) {
-        const packageId = packageButton.getAttribute('data-package-id');
-        if (packageId) {
-          const pkg = allPackages.find(p => p.id === parseInt(packageId));
-          if (pkg) {
-            e.preventDefault();
-            setSelectedPackage(pkg);
-            setIsDialogOpen(true);
-          }
-        }
-      }
-    };
-
-    document.addEventListener('click', handlePackageClick);
-    return () => document.removeEventListener('click', handlePackageClick);
-  }, []);
+  // Function to handle package selection
+  const handlePackageSelect = (packageId: number) => {
+    console.log("Package selected in Packages page:", packageId);
+    const pkg = allPackages.find(p => p.id === packageId);
+    if (pkg) {
+      setSelectedPackage(pkg);
+      setIsDialogOpen(true);
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -200,7 +185,7 @@ const Packages = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {packages.map((pkg) => (
                 <div key={pkg.id}>
-                  <PackageCard {...pkg} />
+                  <PackageCard {...pkg} onSelect={handlePackageSelect} />
                 </div>
               ))}
             </div>

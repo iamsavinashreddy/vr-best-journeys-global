@@ -15,6 +15,7 @@ const FeaturedPackages = () => {
 
   // Function to handle package selection by ID
   const handlePackageSelect = (packageId) => {
+    console.log("Package selected in FeaturedPackages:", packageId);
     const pkg = allPackages.find(p => p.id === packageId);
     if (pkg) {
       setSelectedPackage(pkg);
@@ -38,7 +39,7 @@ const FeaturedPackages = () => {
               <PackageCard 
                 {...pkg} 
                 featured={true} 
-                onSelect={(id) => handlePackageSelect(id)}
+                onSelect={handlePackageSelect}
               />
             </div>
           ))}
