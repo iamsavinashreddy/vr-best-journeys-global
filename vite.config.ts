@@ -6,10 +6,20 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  base: './',  // Set the base path for GitHub Pages
+  base: './',  // Set the base path for GitHub Pages and AWS S3
   build: {
     outDir: 'dist',
     emptyOutDir: true,
+    // Add support for S3 and GitHub Pages deployment
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            return 'vendor';
+          }
+        },
+      },
+    },
   },
   server: {
     host: "::",

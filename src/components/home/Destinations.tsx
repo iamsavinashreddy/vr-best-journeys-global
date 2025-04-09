@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { MapPin, ArrowRight } from 'lucide-react';
 
 interface DestinationCardProps {
@@ -38,9 +39,9 @@ const DestinationCard: React.FC<DestinationCardProps> = ({ name, image, packageC
         </div>
       </div>
       
-      <a href={`/destinations/${name.toLowerCase()}`} className="absolute inset-0 z-30">
+      <Link to={`/packages?destination=${name.toLowerCase()}`} className="absolute inset-0 z-30">
         <span className="sr-only">View {name} packages</span>
-      </a>
+      </Link>
     </div>
   );
 };
@@ -91,13 +92,13 @@ const Destinations = () => {
         
         <div className="mt-12 text-center">
           <p className="text-lg mb-3">Can't find your dream destination?</p>
-          <a 
-            href="/destinations" 
-            className="inline-flex items-center text-vrred-500 hover:text-vrred-600 font-medium"
+          <Link 
+            to="/packages" 
+            className="inline-flex items-center text-[#D2042D] hover:text-[#AA0024] font-medium"
           >
             View all destinations
             <ArrowRight className="ml-2 h-4 w-4" />
-          </a>
+          </Link>
         </div>
       </div>
     </section>
