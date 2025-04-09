@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X, Phone, ChevronDown, ArrowUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -8,6 +8,7 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -36,10 +37,17 @@ const Navbar = () => {
     });
   };
 
+  const handleNavigation = (path: string, hasDropdown: boolean) => {
+    if (!hasDropdown) {
+      navigate(path);
+      setIsMobileMenuOpen(false);
+    }
+  };
+
   const navLinks = [
-    { name: 'Destinations', path: '/destinations', hasDropdown: true },
+    { name: 'Destinations', path: '/packages', hasDropdown: true },
     { name: 'Holiday Packages', path: '/packages', hasDropdown: true },
-    { name: 'Contact', path: '/contact' },
+    { name: 'Contact', path: '/contact', hasDropdown: false },
   ];
 
   return (
@@ -54,8 +62,8 @@ const Navbar = () => {
             {/* Logo */}
             <Link to="/" className="flex items-center">
               <img 
-                src="https://raw.githubusercontent.com/iamsavinashreddy/vrbest-group/main/Img/vr-best-travel-logo-1.png" 
-                alt="VR Best Travels" 
+                src="https://raw.githubusercontent.com/iamsavinashreddy/vrbest-group/main/Img/vr-best-group-logo1.png" 
+                alt="VR Best Group" 
                 className="h-12 w-auto"
               />
             </Link>
@@ -66,7 +74,12 @@ const Navbar = () => {
                 <div key={link.name} className="relative group">
                   <Link
                     to={link.path}
-                    className="flex items-center text-black hover:text-[#D2042D] font-semibold"
+                    className="flex items-center text-black hover:text-[#D2042D] font-bold"
+                    onClick={(e) => {
+                      if (link.hasDropdown) {
+                        e.preventDefault();
+                      }
+                    }}
                   >
                     {link.name}
                     {link.hasDropdown && (
@@ -140,8 +153,12 @@ const Navbar = () => {
                   <React.Fragment key={link.name}>
                     <Link
                       to={link.path}
-                      className="px-4 py-2 text-black hover:bg-gray-50 hover:text-[#D2042D] rounded-md font-semibold"
-                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="px-4 py-2 text-black hover:bg-gray-50 hover:text-[#D2042D] rounded-md font-bold"
+                      onClick={() => {
+                        if (!link.hasDropdown) {
+                          setIsMobileMenuOpen(false);
+                        }
+                      }}
                     >
                       {link.name}
                     </Link>

@@ -1,6 +1,6 @@
 
-import React, { useState } from 'react';
-import { useSearchParams, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams, Link, useLocation } from 'react-router-dom';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
@@ -12,21 +12,17 @@ import { MapPin, Calendar, Filter, Star, Clock, Users } from 'lucide-react';
 import allPackages from '@/data/packages';
 
 const Packages = () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
   const destinationParam = searchParams.get('destination');
+  const typeParam = searchParams.get('type');
   const monthParam = searchParams.get('month');
   
-  const [packages, setPackages] = useState<PackageProps[]>(() => {
-    if (destinationParam) {
-      return allPackages.filter(pkg => 
-        pkg.destination.toLowerCase() === destinationParam.toLowerCase()
-      );
-    }
-    return allPackages;
-  });
+  const [packages, setPackages] = useState<PackageProps[]>([]);
   
   const [filters, setFilters] = useState({
     destination: destinationParam || '',
+    type: typeParam || '',
     month: monthParam || '',
     minPrice: '',
     maxPrice: '',
@@ -35,6 +31,27 @@ const Packages = () => {
   
   const [selectedPackage, setSelectedPackage] = useState<PackageProps | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  // Effect to handle URL parameters and filter packages
+  useEffect(() => {
+    let filtered = [...allPackages];
+    
+    // Apply destination filter from URL params
+    if (destinationParam) {
+      filtered = filtered.filter(pkg => 
+        pkg.destination.toLowerCase() === destinationParam.toLowerCase()
+      );
+      setFilters(prev => ({ ...prev, destination: destinationParam }));
+    }
+    
+    // Apply type filter from URL params
+    if (typeParam) {
+      // This would filter by package type if we had that property
+      setFilters(prev => ({ ...prev, type: typeParam }));
+    }
+    
+    setPackages(filtered);
+  }, [destinationParam, typeParam, monthParam, location.search]);
 
   const handleFilterChange = (key: string, value: string) => {
     setFilters(prev => ({ ...prev, [key]: value }));
@@ -61,11 +78,30 @@ const Packages = () => {
     
     setPackages(filtered);
   };
-  
-  const openPackageDetails = (pkg: PackageProps) => {
-    setSelectedPackage(pkg);
-    setIsDialogOpen(true);
-  };
+
+  // Global click handler to capture package card clicks
+  useEffect(() => {
+    const handlePackageClick = (e: MouseEvent) => {
+      // Find closest button with data-package-id
+      const target = e.target as Element;
+      const packageButton = target.closest('button[data-package-id]');
+      
+      if (packageButton) {
+        const packageId = packageButton.getAttribute('data-package-id');
+        if (packageId) {
+          const pkg = allPackages.find(p => p.id === parseInt(packageId));
+          if (pkg) {
+            e.preventDefault();
+            setSelectedPackage(pkg);
+            setIsDialogOpen(true);
+          }
+        }
+      }
+    };
+
+    document.addEventListener('click', handlePackageClick);
+    return () => document.removeEventListener('click', handlePackageClick);
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -163,7 +199,7 @@ const Packages = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {packages.map((pkg) => (
-                <div key={pkg.id} onClick={() => openPackageDetails(pkg)} className="cursor-pointer">
+                <div key={pkg.id}>
                   <PackageCard {...pkg} />
                 </div>
               ))}
@@ -253,7 +289,7 @@ const Packages = () => {
                         </div>
                       </div>
                       
-                      <p className="text-sm mb-4">{selectedPackage.description}</p>
+                      <p className="text-sm mb-4">{selectedPackage.description || `Experience the beauty of ${selectedPackage.destination} with our ${selectedPackage.duration} package. Perfect for families and couples.`}</p>
                       
                       <Button variant="outline" className="w-full border-[#D2042D] text-[#D2042D] hover:bg-[#D2042D]/10" asChild>
                         <Link to={`/contact?package=${encodeURIComponent(selectedPackage.title)}`}>Enquire Now</Link>

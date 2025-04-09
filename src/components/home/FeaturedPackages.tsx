@@ -21,13 +21,15 @@ const FeaturedPackages = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {featuredPackages.map((pkg) => (
-            <PackageCard key={pkg.id} {...pkg} />
+            <div key={pkg.id}>
+              <PackageCard {...pkg} featured={true} />
+            </div>
           ))}
         </div>
         
         <div className="mt-12 text-center">
           <Button 
-            className="bg-vrred-500 hover:bg-vrred-600 text-white px-8 py-3 rounded-md"
+            className="bg-[#D2042D] hover:bg-[#AA0024] text-white px-8 py-3 rounded-md"
             asChild
           >
             <Link to="/packages">View All Packages</Link>

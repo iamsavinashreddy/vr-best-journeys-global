@@ -18,8 +18,14 @@ export default defineConfig(({ mode }) => ({
             return 'vendor';
           }
         },
+        // Add proper chunking for AWS S3
+        entryFileNames: 'assets/[name].[hash].js',
+        chunkFileNames: 'assets/[name].[hash].js',
+        assetFileNames: 'assets/[name].[hash].[ext]',
       },
     },
+    // Ensure source maps for debugging
+    sourcemap: mode !== 'production',
   },
   server: {
     host: "::",

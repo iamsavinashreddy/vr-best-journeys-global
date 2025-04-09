@@ -85,6 +85,7 @@ export const PackageCard: React.FC<PackageProps> = ({
           <Button
             size="sm"
             className="bg-[#D2042D] hover:bg-[#AA0024] text-white"
+            data-package-id={id}
           >
             View Details
           </Button>
