@@ -3,11 +3,13 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X, Phone, ChevronDown, ArrowUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const isMobile = useIsMobile();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -55,8 +57,8 @@ const Navbar = () => {
       <header 
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled 
-            ? 'bg-white shadow-md py-2' 
-            : 'bg-white/70 backdrop-blur-sm py-4'
+            ? 'bg-white/90 backdrop-blur-sm shadow-md py-2' 
+            : 'bg-white/30 backdrop-blur-sm py-4'
         }`}
       >
         <div className="container mx-auto px-4">
@@ -66,7 +68,7 @@ const Navbar = () => {
               <img 
                 src="https://raw.githubusercontent.com/iamsavinashreddy/vrbest-group/main/Img/vr-best-travel-logo-1.png" 
                 alt="VR Best Group" 
-                className="h-12 w-auto"
+                className={`w-auto ${isMobile ? 'h-14' : 'h-16'} transition-all duration-300`}
               />
             </Link>
 
